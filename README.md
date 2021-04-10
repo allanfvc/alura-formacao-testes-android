@@ -1,2 +1,2 @@
-# alura-formacao-testes-android
-Repositório contendo as implementações do cursos de formação em testes automatizados android da plataforma Alura.
+# Testes automatizados no Android
+Repositório contendo as implementações do cursos de [testes automatizados no android](https://cursos.alura.com.br/formacao-testes-automatizados-android) da plataforma [Alura](https://www.alura.com.br).
