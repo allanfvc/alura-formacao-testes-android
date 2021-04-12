@@ -50,10 +50,12 @@ public class ListaLeilaoAdapter extends RecyclerView.Adapter<ListaLeilaoAdapter.
 
         private final TextView descricao;
         private Leilao leilao;
+        private final TextView maiorLance;
 
         ViewHolder(View itemView) {
             super(itemView);
             descricao = itemView.findViewById(R.id.item_leilao_descricao);
+            maiorLance = itemView.findViewById(R.id.item_leilao_maior_lance);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -65,6 +67,7 @@ public class ListaLeilaoAdapter extends RecyclerView.Adapter<ListaLeilaoAdapter.
         void vincula(Leilao leilao) {
             this.leilao = leilao;
             descricao.setText(leilao.getDescricao());
+            maiorLance.setText(String.valueOf(leilao.getMaiorLance()));
         }
 
     }
