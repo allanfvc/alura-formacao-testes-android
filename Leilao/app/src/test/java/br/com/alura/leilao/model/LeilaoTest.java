@@ -25,14 +25,6 @@ public class LeilaoTest {
     }
 
     @Test
-    public void deveDevolverMaiorValorQuandoRecebeLancesEmOrdemDecrescente() {
-        LEILAO.propoe(new Lance(FRAN, 300.00));
-        LEILAO.propoe(new Lance(ALEX, 200.00));
-        assertEquals(300.00, LEILAO.getMaiorLance(), DELTA);
-    }
-
-
-    @Test
     public void deveDevolverMaiorValorQuandoRecebeLancesEmOrdemCrescente() {
         LEILAO.propoe(new Lance(FRAN, 9000.00));
         LEILAO.propoe(new Lance(ALEX, 10000.00));
@@ -43,13 +35,6 @@ public class LeilaoTest {
     public void deveDevolverMenorValorQuandoRecebeApenasUmLance() {
         LEILAO.propoe(new Lance(FRAN, 300.00));
         assertEquals(300.00, LEILAO.getMenorLance(), DELTA);
-    }
-
-    @Test
-    public void deveDevolverMenorValorQuandoRecebeLancesEmOrdemDecrescente() {
-        LEILAO.propoe(new Lance(FRAN, 300.00));
-        LEILAO.propoe(new Lance(ALEX, 200.00));
-        assertEquals(200.00, LEILAO.getMenorLance(), DELTA);
     }
 
     @Test
@@ -75,7 +60,7 @@ public class LeilaoTest {
 
     @Test
     public void deveDevolverTresMaioresLancesQuandoRecebeMaisDeTresLances() {
-        LEILAO.propoe(new Lance(FRAN, 200.00));
+        LEILAO.propoe(new Lance(FRAN, 150.00));
         LEILAO.propoe(new Lance(ALEX, 200.00));
         LEILAO.propoe(new Lance(FRAN, 300.00));
         LEILAO.propoe(new Lance(ALEX, 400.00));
@@ -99,5 +84,36 @@ public class LeilaoTest {
         assertEquals(300.00, tresMaioresLances.get(0).getValor(), DELTA);
         assertEquals(200.00, tresMaioresLances.get(1).getValor(), DELTA);
 
+    }
+
+    @Test
+    public void deveDevolverZeroParaMaiorLanceQuandoNaoTiverLances() {
+        assertEquals(0.0, LEILAO.getMaiorLance(), DELTA);
+    }
+
+    @Test
+    public void deveDevolverZeroParaMenorLanceQuandoNaoTiverLances() {
+        assertEquals(0.0, LEILAO.getMenorLance(), DELTA);
+    }
+
+    @Test
+    public void naoDeveAdicionarLanceQuandoForMenorQueOMaiorLance() {
+        LEILAO.propoe(new Lance(ALEX, 200.00));
+        LEILAO.propoe(new Lance(FRAN, 300.00));
+        LEILAO.propoe(new Lance(ALEX, 299.00));
+
+        List<Lance> tresMaioresLances =  LEILAO.getTresMaioresLances();
+
+        assertEquals(2, tresMaioresLances.size());
+        assertEquals(300.00, tresMaioresLances.get(0).getValor(), DELTA);
+        assertEquals(200.00, tresMaioresLances.get(1).getValor(), DELTA);
+    }
+
+    @Test
+    public void naoDeveAdicionarLanceQuandoForOMesmoUsuarioDoUltimoLance() {
+        LEILAO.propoe(new Lance(ALEX, 200.00));
+        LEILAO.propoe(new Lance(ALEX, 300.00));
+
+        assertEquals(1, LEILAO.getQuantidadeLances());
     }
 }

@@ -9,8 +9,8 @@ public class Leilao implements Serializable {
 
     private final String descricao;
     private final List<Lance> lances;
-    private double menorLance = Double.POSITIVE_INFINITY;
-    private double maiorLance = Double.NEGATIVE_INFINITY;
+    private double menorLance = 0.00;
+    private double maiorLance = 0.00;
 
     public Leilao(String descricao) {
         this.descricao = descricao;
@@ -18,20 +18,35 @@ public class Leilao implements Serializable {
     }
 
     public void propoe(Lance lance) {
-        calcularMaiorLance(lance.getValor());
-        calculaMenorLance(lance.getValor());
+        if (lance.getValor() < maiorLance) return;
+        if(!lances.isEmpty()) {
+            Lance ultimoLance = lances.get(0);
+            if(ultimoLance.getUsuario().equals(lance.getUsuario())) return;
+        }
+        calculaMaiorEMenorLance(lance);
         lances.add(lance);
         Collections.sort(lances);
+
+    }
+
+    private void calculaMaiorEMenorLance(Lance lance) {
+        if (lances.isEmpty()) {
+            maiorLance = lance.getValor();
+            menorLance = lance.getValor();
+        } else {
+            calcularMaiorLance(lance.getValor());
+            calculaMenorLance(lance.getValor());
+        }
     }
 
     private void calculaMenorLance(double valorLance) {
-        if(valorLance < menorLance) {
+        if (valorLance < menorLance) {
             menorLance = valorLance;
         }
     }
 
     private void calcularMaiorLance(double valorLance) {
-        if(valorLance > maiorLance) {
+        if (valorLance > maiorLance) {
             maiorLance = valorLance;
         }
     }
@@ -49,10 +64,14 @@ public class Leilao implements Serializable {
     }
 
     public List<Lance> getTresMaioresLances() {
-        if(this.lances.size() >= 3) {
-            return this.lances.subList(0,3);
+        if (this.lances.size() >= 3) {
+            return this.lances.subList(0, 3);
         } else {
             return this.lances.subList(0, this.lances.size());
         }
+    }
+
+    public int getQuantidadeLances() {
+        return this.lances.size();
     }
 }
