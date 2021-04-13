@@ -116,4 +116,13 @@ public class LeilaoTest {
 
         assertEquals(1, LEILAO.getQuantidadeLances());
     }
+    @Test
+    public void naoDeveAdicionarLanceQuandoUsuarioAdicionarMaisDeCincoLances() {
+        for (int i = 0; i < 6; i++) {
+            LEILAO.propoe(new Lance(ALEX, (i+1)*100.00));
+            LEILAO.propoe(new Lance(FRAN, (i+1)*101.00));
+        }
+
+        assertEquals(10, LEILAO.getQuantidadeLances());
+    }
 }
