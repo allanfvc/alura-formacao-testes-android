@@ -2,37 +2,75 @@ package br.com.alura.leilao.model;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class LeilaoTest {
 
+    private final Leilao LEILAO = new Leilao("Console");
+    private final Usuario FRAN = new Usuario("Fran");
+    private final Usuario ALEX = new Usuario("Alex");
+    private final double DELTA = 0.0001;
+
     @Test
-    public void getDescricaoQuandoRecebeDescricaoDevolveDescricao() {
-        final Leilao console = new Leilao("Console");
-        assertEquals("Console", console.getDescricao());
+    public void deveDevolverDescricaoQuandoRecebeDescricao() {
+        assertEquals("Console", LEILAO.getDescricao());
     }
 
     @Test
-    public void getMaiorLanceQuandoRecebeApenasUmLanceDevolveMaiorValor() {
-        final Leilao console = new Leilao("Console");
-        console.propoe(new Lance(new Usuario("Fran"), 300.00));
-        assertEquals(300.00, console.getMaiorLance(), 0.0001);
+    public void deveDevolverMaiorValorQuandoRecebeApenasUmLance() {
+        LEILAO.propoe(new Lance(FRAN, 300.00));
+        assertEquals(300.00, LEILAO.getMaiorLance(), DELTA);
     }
 
     @Test
-    public void getMaiorLanceQuandoRecebeLancesOrdemDescrescenteDevolveMaiorValor() {
-        final Leilao computador = new Leilao("Computador");
-        computador.propoe(new Lance(new Usuario("Fran"), 300.00));
-        computador.propoe(new Lance(new Usuario("Alex"), 200.00));
-        assertEquals(300.00, computador.getMaiorLance(), 0.0001);
+    public void deveDevolverMaiorValorQuandoRecebeLancesEmOrdemDecrescente() {
+        LEILAO.propoe(new Lance(FRAN, 300.00));
+        LEILAO.propoe(new Lance(ALEX, 200.00));
+        assertEquals(300.00, LEILAO.getMaiorLance(), DELTA);
     }
 
 
     @Test
-    public void getMaiorLanceQuandoRecebeLancesOrdemCrescenteDevolveMaiorValor() {
-        final Leilao leilao = new Leilao("Carro");
-        leilao.propoe(new Lance(new Usuario("Fran"), 9000.00));
-        leilao.propoe(new Lance(new Usuario("Alex"), 10000.00));
-        assertEquals(10000.00, leilao.getMaiorLance(), 0.0001);
+    public void deveDevolverMaiorValorQuandoRecebeLancesEmOrdemCrescente() {
+        LEILAO.propoe(new Lance(FRAN, 9000.00));
+        LEILAO.propoe(new Lance(ALEX, 10000.00));
+        assertEquals(10000.00, LEILAO.getMaiorLance(), DELTA);
+    }
+
+    @Test
+    public void deveDevolverMenorValorQuandoRecebeApenasUmLance() {
+        LEILAO.propoe(new Lance(FRAN, 300.00));
+        assertEquals(300.00, LEILAO.getMenorLance(), DELTA);
+    }
+
+    @Test
+    public void deveDevolverMenorValorQuandoRecebeLancesEmOrdemDecrescente() {
+        LEILAO.propoe(new Lance(FRAN, 300.00));
+        LEILAO.propoe(new Lance(ALEX, 200.00));
+        assertEquals(200.00, LEILAO.getMenorLance(), DELTA);
+    }
+
+    @Test
+    public void deveDevolverMenorValorQuandoRecebeLancesEmOrdemCrescente() {
+        LEILAO.propoe(new Lance(FRAN, 9000.00));
+        LEILAO.propoe(new Lance(ALEX, 10000.00));
+        assertEquals(9000.00, LEILAO.getMenorLance(), DELTA);
+    }
+
+    @Test
+    public void deveDevolverTresMaioresLancesQuandoRecebeTresLances() {
+        LEILAO.propoe(new Lance(FRAN, 200.00));
+        LEILAO.propoe(new Lance(ALEX, 200.00));
+        LEILAO.propoe(new Lance(FRAN, 300.00));
+        LEILAO.propoe(new Lance(ALEX, 400.00));
+
+        List<Lance> tresMaioresLances =  LEILAO.getTresMaioresLances();
+
+        assertEquals(3, tresMaioresLances.size());
+        assertEquals(400.00, tresMaioresLances.get(0).getValor(), DELTA);
+        assertEquals(300.00, tresMaioresLances.get(1).getValor(), DELTA);
+        assertEquals(200.00, tresMaioresLances.get(2).getValor(), DELTA);
     }
 }
