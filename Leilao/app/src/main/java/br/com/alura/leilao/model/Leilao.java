@@ -49,6 +49,10 @@ public class Leilao implements Serializable {
     }
 
     public List<Lance> getTresMaioresLances() {
-        return this.lances.subList(0,3);
+        if(this.lances.size() >= 3) {
+            return this.lances.subList(0,3);
+        } else {
+            return this.lances.subList(0, this.lances.size());
+        }
     }
 }
